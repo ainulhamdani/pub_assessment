@@ -1,7 +1,6 @@
 <?php
 $this->load->view("header-login");
 ?>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];

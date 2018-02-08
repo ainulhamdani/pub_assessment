@@ -8,6 +8,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="<?=$this->config->item('google_client_id')?>">
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
     <title>Public Assesment - Beats</title>
 

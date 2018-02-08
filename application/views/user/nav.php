@@ -14,9 +14,24 @@
 				<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown08">
 					<a class="dropdown-item" href="#">Profile</a>
-					<a class="dropdown-item" href="<?=base_url()?>welcome/logout">Logout</a>
+					<a class="dropdown-item" onclick="signout()">Logout</a>
 				</div>
 			</li>
 		</ul>
 	</div>
 </nav>
+<script type="text/javascript">
+	function signout() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        $(location).attr("href","<?=base_url()?>welcome/logout");
+      });
+    }
+
+    function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+    }
+  </script>
+</script>
