@@ -8,6 +8,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="<?=$this->config->item('google_client_id')?>">
 
     <title>Public Assesment - Beats</title>
 

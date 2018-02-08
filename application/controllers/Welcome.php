@@ -3,9 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
 
+    function __construct() {
+        parent::__construct();
+        $this->load->model("UserModel");
+    }
+
 	public function index()
 	{
-		if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
+		if(empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') == FALSE) {
             redirect('welcome/login');
         }
 
@@ -13,7 +18,7 @@ class Welcome extends CI_Controller {
 	}
 
 	public function login(){
-        if(!empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') != FALSE) {
+        if(!empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') != FALSE) {
             redirect('');
         }
         if($_POST) {
@@ -46,6 +51,147 @@ class Welcome extends CI_Controller {
         }
  
         $this->load->view("login");
+    }
+
+    public function register(){
+        if(!empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') != FALSE) {
+            redirect('');
+        }
+        $this->load->view("register");
+    }
+
+    public function register_do(){
+        if(!empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') != FALSE) {
+            redirect('');
+        }
+        if($_POST) {
+            $this->load->model("Uuid");
+            $uuid = $this->Uuid->v4();
+            $id = $this->input->post('id');
+            $fullname = $this->input->post('fullname');
+            $imageurl = $this->input->post('imageurl');
+            $email = $this->input->post('email');
+            $username = $this->input->post('username');
+            $password = md5($this->input->post('password'));
+            $source = $this->input->post('source');
+            $token = $this->input->post('token');
+
+            if($source=="google"){
+                $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                $this->UserModel->addGoogleAuth($uuid,$id);
+            }elseif($source=="facebook"){
+                $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                $this->UserModel->addFacebookAuth($uuid,$id);
+            }else{
+                $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+            }
+            $data = [
+                'userid' => $uuid,
+                'username' => $username,
+                'level' => 'user',
+                'user_valid' => true
+            ];
+            $this->session->set_userdata($data);
+        }
+        redirect('');
+
+    }
+
+    public function oauth2callback(){
+        if(!empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') != FALSE) {
+            redirect('');
+        }
+        if($_POST) {
+            $id = $this->input->post('id');
+            $fullname = $this->input->post('fullname');
+            $imageurl = $this->input->post('imageurl');
+            $email = $this->input->post('email');
+            $token = $this->input->post('token');
+
+            // echo($token);
+
+            $result = $this->UserModel->checkGoogleToken($id);
+
+            if(!empty($result)) {
+                $user = $this->UserModel->getUser($result->user_id);
+                if($user->is_active){
+                    $data = [
+                        'userid' => $user->userid,
+                        'username' => $user->username,
+                        'level' => $user->level,
+                        'user_valid' => true
+                    ];
+     
+                    $this->session->set_userdata($data);
+                    $this->db->query("UPDATE users SET last_login=current_timestamp WHERE userid = '".$user->userid."'");
+                    if($this->input->post('url')!=""){
+                        $res['code'] = 202;
+                        $res['detail'] = "There is user";
+                        $res['url'] = $this->input->post('url');
+                        echo(json_encode($res));
+                    }else {
+                        $res['code'] = 200;
+                        $res['detail'] = "There is user";
+                        echo(json_encode($res));
+                    }
+                }else{
+                    $res['code'] = 403;
+                    $res['detail'] = "User Inactive";
+                    echo(json_encode($res));
+                }
+            } else {
+                $res['code'] = 404;
+                $res['detail'] = "There is no user";
+                echo(json_encode($res));
+            }
+        }
+    }
+
+    public function fboauth2(){
+        if(!empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') != FALSE) {
+            redirect('');
+        }
+        if($_POST) {
+            $id = $this->input->post('id');
+            $fullname = $this->input->post('fullname');
+            $imageurl = $this->input->post('imageurl');
+            $email = $this->input->post('email');
+            $token = $this->input->post('token');
+
+            $result = $this->UserModel->checkFacebookToken($id);
+
+            if(!empty($result)) {
+                $user = $this->UserModel->getUser($result->user_id);
+                if($user->is_active){
+                    $data = [
+                        'userid' => $user->userid,
+                        'username' => $user->username,
+                        'level' => $user->level,
+                        'user_valid' => true
+                    ];
+     
+                    $this->session->set_userdata($data);
+                    $this->db->query("UPDATE users SET last_login=current_timestamp WHERE userid = '".$user->userid."'");
+                    if($this->input->post('url')!=""){
+                        $res['code'] = 202;
+                        $res['detail'] = "There is user";
+                        $res['url'] = $this->input->post('url');
+                        echo(json_encode($res));
+                    }else {
+                        $res['code'] = 200;
+                        $res['detail'] = "There is user";
+                        echo(json_encode($res));
+                    }
+                }else{
+                    $this->session->set_flashdata('error', '<div class="alert alert-danger" role="alert"><center>Username tidak aktif! Harap menghubungi HR</center></div>');
+                    redirect('welcome/login');
+                }
+            } else {
+                $res['code'] = 404;
+                $res['detail'] = "There is no user";
+                echo(json_encode($res));
+            }
+        }
     }
     
     public function logout() {
