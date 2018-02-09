@@ -64,17 +64,18 @@ $this->load->view("header");
 		    $('#submit').prop("disabled",true);
 		  }
 		});
-		
-	    function onLoad() {
-	      gapi.load('auth2', function() {
-	        gapi.auth2.init();
-	        var auth2 = gapi.auth2.getAuthInstance();
-		      auth2.signOut().then(function () {
-		        
-		      });
-	      });
-	    }
 	});
+	function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init().then(function (authInstance) {
+	        // now auth2 is fully initialized
+	        authInstance.signOut().then(function () {
+	        // console.log("signed out");
+	      });
+	    });
+	      
+      });
+    }
 </script>
 
 <?php
