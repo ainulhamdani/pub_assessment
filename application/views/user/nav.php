@@ -33,5 +33,4 @@
         gapi.auth2.init();
       });
     }
-  </script>
 </script>
