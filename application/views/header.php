@@ -11,6 +11,29 @@
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="<?=$this->config->item('google_client_id')?>">
     <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <style>
+      html {
+        font-size: 1rem;
+      }
+
+      @include media-breakpoint-up(sm) {
+        html {
+          font-size: 1.2rem;
+        }
+      }
+
+      @include media-breakpoint-up(md) {
+        html {
+          font-size: 1.4rem;
+        }
+      }
+
+      @include media-breakpoint-up(lg) {
+        html {
+          font-size: 1.6rem;
+        }
+      }
+    </style>
 
     <title>Public Assesment - Beats</title>
 
