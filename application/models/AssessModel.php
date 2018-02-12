@@ -8,8 +8,8 @@ class AssessModel extends CI_Model {
         parent::__construct();
     }
 
-    public function getAssessments(){
-    	return $this->db->query("SELECT * FROM assessment")->result();
+    public function getAssessments($cond="1"){
+    	return $this->db->query("SELECT * FROM assessment WHERE ".$cond)->result();
     }
 
     public function getAssessment($id){
@@ -35,11 +35,41 @@ class AssessModel extends CI_Model {
     }
 
     public function getTasks($id){
-    	return $this->db->query("SELECT * FROM task WHERE assessment_id=$id")->result();
+        return $this->db->query("SELECT * FROM task WHERE assessment_id=$id")->result();
+    }
+
+
+    public function getUnansweredTasks($assessid,$answers){
+        $answered = "";
+        if(empty($answers)){
+            $answered = "1";
+        }else{
+            foreach ($answers as $answer) {
+                $id = $answer->task_id;
+                $answered .= "id != $id";
+                if($answer!=  end($answers)) $answered .= " AND ";
+            }
+        }
+        return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND ($answered) ORDER BY id")->row();
     }
 
     public function getQuestion($id){
-    	return $this->db->query("SELECT * FROM assessment_question WHERE id='$id'")->row();
+        return $this->db->query("SELECT * FROM assessment_question WHERE id='$id'")->row();
+    }
+
+    public function getAnswers($id,$userid){
+        return $this->db->query("SELECT task_id FROM answer WHERE assessment_id='$id' AND userid='$userid'")->result();
+    }
+
+    public function saveAnswer($data){
+        $userid = $data['conf']['userid'];
+        $assessment_id = $data['conf']['assessment_id'];
+        $task_id = $data['conf']['task_id'];
+        $version = $data['version'];
+        unset($data['conf']);
+        $data = json_encode($data);
+        $timestamp = date('Y-m-d H:i:s');
+        $this->db->query("INSERT INTO answer (userid,assessment_id,task_id,version,timestamp,answer) VALUES('$userid',$assessment_id,$task_id,$version,'$timestamp','$data')");
     }
 
 }

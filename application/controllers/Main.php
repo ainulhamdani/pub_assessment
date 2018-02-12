@@ -9,9 +9,9 @@ class Main extends CI_Controller {
             redirect('welcome/login');
         }
         if($this->session->userdata('level')=="admin"){
-        	$this->load->view("admin/main");
+            redirect('assessment');
         }else{
-        	$this->load->view("user/main");
+        	redirect('assessment');
         }
 	}
 

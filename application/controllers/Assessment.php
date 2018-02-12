@@ -8,6 +8,7 @@ class Assessment extends CI_Controller {
         if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
             redirect('welcome/login');
         }
+        date_default_timezone_set("Asia/Makassar"); 
         $this->load->model("AssessModel");
     }
 
@@ -17,7 +18,8 @@ class Assessment extends CI_Controller {
         	$data['assessments'] = $this->AssessModel->getAssessments();
         	$this->load->view("admin/assess/main",$data);
         }else{
-        	$this->load->view("user/main");
+            $data['assessments'] = $this->AssessModel->getAssessments("is_active = 1");
+        	$this->load->view("user/assess/main",$data);
         }
 	}
 
@@ -40,17 +42,52 @@ class Assessment extends CI_Controller {
         }
 	}
 
-	public function detail($id=""){
-		if($id=="") redirect('assessment');
-		if($this->session->userdata('level')=="admin"){
+    public function detail($id=""){
+        if($id=="") redirect('assessment');
+        if($this->session->userdata('level')=="admin"){
             $data['assessment'] = $this->AssessModel->getAssessment($id);
             $data['question'] = $this->AssessModel->getQuestion($id);
             $data['tasks'] = $this->AssessModel->getTasks($id);
-        	$this->load->view("admin/assess/detail",$data);
+            $this->load->view("admin/assess/detail",$data);
         }else{
-        	$this->load->view("user/main");
+            $this->load->view("user/main");
         }
-	}
+    }
+
+    public function info($id=""){
+        if($id=="") redirect('assessment');
+        if($this->session->userdata('level')=="admin"){
+            // $this->load->view("admin/assess/main");
+        }else{
+            $data['assessment'] = $this->AssessModel->getAssessment($id);
+            $data['question'] = $this->AssessModel->getQuestion($id);
+            $data['tasks'] = $this->AssessModel->getTasks($id);
+            $this->load->view("user/assess/detail",$data);
+        }
+    }
+
+    public function grade($id=""){
+        if($id=="") redirect('assessment');
+        if($this->session->userdata('level')=="admin"){
+            // $this->load->view("admin/assess/main");
+        }else{
+            $this->load->model("Question");
+            $data['assessment'] = $this->AssessModel->getAssessment($id);
+            $data['question'] = $this->AssessModel->getQuestion($id);
+            $answer = $this->AssessModel->getAnswers($id,$this->session->userdata('userid'));
+            $data['task'] = $this->AssessModel->getUnansweredTasks($id,$answer);
+            $this->load->view("user/assess/grade",$data);
+        }
+    }
+
+    public function savegrade(){
+        $id = '';
+        if($_POST){
+            $id = $id = $this->input->post('conf[assessment_id]');
+            $this->AssessModel->saveAnswer($_POST);
+        }
+        redirect('assessment/grade/'.$id);
+    }
 
     public function add_task($id=""){
         if($id=="") redirect('assessment');
