@@ -21,4 +21,12 @@ class User extends CI_Controller {
         }
 	}
 
+    public function checkemail($email){
+        echo $this->UserModel->isEmailExist(urldecode($email))?200:404;
+    }
+
+    public function checkusername($uname){
+        echo $this->UserModel->isUsernameExist(urldecode($uname))?200:404;
+    }
+
 }

@@ -76,22 +76,31 @@ class Welcome extends CI_Controller {
             $source = $this->input->post('source');
             $token = $this->input->post('token');
 
-            if($source=="google"){
-                $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
-                $this->UserModel->addGoogleAuth($uuid,$id);
-            }elseif($source=="facebook"){
-                $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
-                $this->UserModel->addFacebookAuth($uuid,$id);
-            }else{
-                $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+            if($this->UserModel->isEmailExist($email)){
+                $this->session->set_flashdata('error', '<div class="alert alert-danger" role="alert"><center>Email already used!</center></div>');
+                redirect('welcome/register');
             }
-            $data = [
-                'userid' => $uuid,
-                'username' => $username,
-                'level' => 'user',
-                'user_valid' => true
-            ];
-            $this->session->set_userdata($data);
+            if($this->UserModel->isUsernameExist($username)){
+                $this->session->set_flashdata('error', '<div class="alert alert-danger" role="alert"><center>Username already exist!</center></div>');
+                redirect('welcome/register');
+            }else{
+                if($source=="google"){
+                    $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                    $this->UserModel->addGoogleAuth($uuid,$id);
+                }elseif($source=="facebook"){
+                    $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                    $this->UserModel->addFacebookAuth($uuid,$id);
+                }else{
+                    $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                }
+                $data = [
+                    'userid' => $uuid,
+                    'username' => $username,
+                    'level' => 'user',
+                    'user_valid' => true
+                ];
+                $this->session->set_userdata($data);
+            }
         }
         redirect('');
 

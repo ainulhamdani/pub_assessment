@@ -13,10 +13,12 @@ $this->load->view("header");
 			<div class="form-group">
 				<label for="email">Email or Telephone Number</label>
 				<input type="text" class="form-control" id="email" name="email" aria-describedby="emHelp" placeholder="Email or Telephone Number" required>
+				<small id="emailHelp" class="form-text"></small>
 			</div>
 			<div class="form-group">
 				<label for="username">Username</label>
 				<input type="text" class="form-control" id="username" name="username" aria-describedby="usHelp" placeholder="Enter Username" required>
+				<small id="usernameHelp" class="form-text"></small>
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
@@ -64,6 +66,28 @@ $this->load->view("header");
 		    $('#submit').prop("disabled",true);
 		  }
 		});
+
+		var emailTypingTimer;
+		var usernameTypingTimer;
+		var doneTypingInterval = 1500;
+
+		$('#email').on('keyup keydown change',function(){
+			$('#emailHelp').html('');
+			$('#email').removeClass("bg-success bg-danger text-white");
+		    clearTimeout(emailTypingTimer);
+		    if ($('#email').val()) {
+		    	emailTypingTimer = setTimeout(emailDoneTyping.bind(null, $('#email').val()), doneTypingInterval);
+		    }
+		});
+		$('#username').on('keyup keydown change',function(){
+			$('#usernameHelp').html('');
+			$('#username').removeClass("bg-success bg-danger text-white");
+		    clearTimeout(usernameTypingTimer);
+		    if ($('#username').val()) {
+		    	usernameTypingTimer = setTimeout(usernameDoneTyping.bind(null, $('#username').val()), doneTypingInterval);
+		    }
+		});
+		
 	});
 	function onLoad() {
       gapi.load('auth2', function() {
@@ -76,6 +100,38 @@ $this->load->view("header");
 	      
       });
     }
+
+    function emailDoneTyping (email) {
+	    $('#emailHelp').html('Checking.....');
+	    $.post( "<?=base_url()?>user/checkemail/"+encodeURIComponent(email) )
+        .done(function( data ) {
+        	if(data==404){
+        		$('#emailHelp').html('Email available!').css('color', 'green');
+        		$('#email').removeClass("bg-danger text-white").addClass("bg-success text-white");
+        		$('#submit').prop("disabled",false);
+        	}else if(data==200){
+        		$('#emailHelp').html('Email already used!').css('color', 'red');
+        		$('#email').addClass("bg-danger text-white");
+        		$('#submit').prop("disabled",true);
+        	}
+        });
+	}
+
+    function usernameDoneTyping (uname) {
+	    $('#usernameHelp').html('Checking.....');
+	    $.post( "<?=base_url()?>user/checkusername/"+encodeURIComponent(uname) )
+        .done(function( data ) {
+        	if(data==404){
+        		$('#usernameHelp').html('Username available!').css('color', 'green');
+        		$('#username').removeClass("bg-danger text-white").addClass("bg-success text-white");
+        		$('#submit').prop("disabled",false);
+        	}else if(data==200){
+        		$('#usernameHelp').html('Username already used!').css('color', 'red');
+        		$('#username').addClass("bg-danger text-white");
+        		$('#submit').prop("disabled",true);
+        	}
+        });
+	}
 </script>
 
 <?php

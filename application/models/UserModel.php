@@ -36,4 +36,12 @@ class UserModel extends CI_Model {
     	return $this->db->query("SELECT * FROM user_facebook_auth WHERE facebook_token='$token'")->row();
     }
 
+    public function isUsernameExist($uname){
+    	return $this->db->query("SELECT username FROM users WHERE username='$uname'")->num_rows()?true:false;
+    }
+
+    public function isEmailExist($email){
+    	return $this->db->query("SELECT email FROM users WHERE email='$email'")->num_rows()?true:false;
+    }
+
 }
