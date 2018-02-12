@@ -10,7 +10,7 @@ $this->load->view("user/nav");
     <div class="col-md-12">
     	<div class="row">
     		<div class="col-12">
-	    		<a href="<?=base_url()?>assessment/grade/<?=$assessment->id?>"><button class="form-control bg-primary text-white">GRADE ASSESSMENT</button></a>
+	    		<a href="<?=base_url()?>assessment/grade/<?=$assessment->id?>"><button class="form-control bg-primary text-white">CLICK HERE TO GRADE ASSESSMENT</button></a>
 	    	</div>
     	</div>
     </div>
