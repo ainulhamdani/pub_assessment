@@ -100,6 +100,17 @@ class Assessment extends CI_Controller {
         }
     }
 
+    public function add_tasks($id=""){
+        if($id=="") redirect('assessment');
+
+        if($this->session->userdata('level')=="admin"){
+            $data['assessment'] = $this->AssessModel->getAssessment($id);
+            $this->load->view("admin/assess/add_multiple",$data);
+        }else{
+            $this->load->view("user/main");
+        }
+    }
+
     public function savetask(){
         if($this->session->userdata('level')=="admin"){
             $id = $this->input->post('id');
@@ -126,6 +137,45 @@ class Assessment extends CI_Controller {
                     $this->AssessModel->addTask($id,$code,$type);
                     redirect("assessment/detail/".$id);
             }
+        }else{
+            $this->load->view("user/main");
+        }
+    }
+
+    public function savetasks(){
+        if($this->session->userdata('level')=="admin"){
+            $id = $this->input->post('id');
+            $type = $this->input->post('type');
+            $config['upload_path']          = './asset/uploads/';
+            $config['allowed_types']        = 'gif|jpg|jpeg|png';
+            $config['file_ext_tolower']     = TRUE;
+            $config['max_size']             = 10000;
+            $config['max_width']            = 2048;
+            $config['max_height']           = 2048;
+
+            $this->load->library('upload');
+            $this->upload->initialize($config);
+            if($this->input->post('fileSubmit') && !empty($_FILES['userFiles']['name'])){
+                $filesCount = count($_FILES['userFiles']['name']);
+                for($i = 0; $i < $filesCount; $i++){
+                    $_FILES['userFile']['name'] = strtolower($_FILES['userFiles']['name'][$i]);
+                    $_FILES['userFile']['type'] = $_FILES['userFiles']['type'][$i];
+                    $_FILES['userFile']['tmp_name'] = $_FILES['userFiles']['tmp_name'][$i];
+                    $_FILES['userFile']['error'] = $_FILES['userFiles']['error'][$i];
+                    $_FILES['userFile']['size'] = $_FILES['userFiles']['size'][$i];
+                    
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if($this->upload->do_upload('userFile')){
+                        $fileData = $this->upload->data();
+                        $this->AssessModel->addTask($id,$fileData['raw_name'],$type);
+                    }else{
+                        $error = array('error' => $this->upload->display_errors());
+                        var_dump($error);
+                    }
+                }
+            }
+            redirect("assessment/detail/".$id);
         }else{
             $this->load->view("user/main");
         }
