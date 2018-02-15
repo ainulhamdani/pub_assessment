@@ -9,24 +9,36 @@ class Question extends CI_Model {
     }
 
     public function getQuestion($id){
-        return $this->db->query("SELECT * FROM assessment_question WHERE id='$id'")->row();
+        return $this->db->query("SELECT * FROM assessment_question WHERE assessment_id='$id' ORDER BY version DESC")->row();
     }
 
-    public function showQuestion($id,$taskid,$questionid){
+    public function showQuestion($id,$taskid,$version){
     	$q = $this->getQuestion($id);
     	$this->load->library('PHPExcell');
-    	$res = $this->loadExcel("asset/questions/".$id."_".$q->id.".xlsx");
-
+    	$res = $this->loadExcel("asset/questions/".$id."_".$q->version.".xlsx");
+        echo('<style>input[type="radio"] {
+            -ms-transform: scale(1.5); /* IE 9 */
+            -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+            transform: scale(1.5);
+        }
+        input[type="checkbox"] {
+            -ms-transform: scale(1.5); /* IE 9 */
+            -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+            transform: scale(1.5);
+        }</style>');
     	echo('<form method="post" class="form-control" action="'.base_url().'assessment/savegrade">');
 
         foreach ($res['survey'] as $key => $question) {
         	$type = explode(' ', $question['type']);
         	if(count($type)>1) $listname = $type[1];
         	$type = $type[0];
-        	$var_name = $question['name'];
+        	$var_name = $question['name'];$relevant = "";
+            if(isset($question['relevant'])){
+                $relevant = 'data-relevant="'.$question['relevant'].'"';
+            }
         	$question = $question['label'];
-
-    		echo('<div class="card">');
+            
+    		echo('<div id="'.$var_name.'" class="card question" '.$relevant.'>');
     		echo('<div class="card-body">');
     		echo('<div class="row form-group">');
     		echo('<div class="col-md-12 col-sm-12 col-12 text-justify">'.$question.'</div>');
@@ -35,25 +47,27 @@ class Question extends CI_Model {
         	if($type=='text'){
         		echo('<input class="form-control" type="text" name="'.$var_name.'" required /></div>');
         	}elseif($type=='select_one'){
-        		echo('<select class="form-control" type="text" name="'.$var_name.'" required />');
         		foreach ($res['choices'][$listname] as $key => $list) {
-        			echo('<option value="'.$list['name'].'">'.$list['label'].'</option>');
+                    echo('<div class="form-check">');
+        			echo('<input id="'.$list['name'].'-input" class="form-check-input" type="radio" value="'.$list['name'].'" name="'.$var_name.'" />');
+                    echo('<label class="form-check-label" for="'.$list['name'].'-input" >'.$list['label'].'</label>');
+                    echo('</div>');
         		}
-        		echo('</select>');
         		echo('</div>');
         	}elseif($type=='select_multiple'){
-        		echo('<select multiple class="form-control" type="text" name="'.$var_name.'" required />');
         		foreach ($res['choices'][$listname] as $key => $list) {
-        			echo('<option value="'.$list['name'].'">'.$list['label'].'</option>');
+                    echo('<div class="form-check">');
+                    echo('<input id="'.$list['name'].'-input" class="form-check-input" type="checkbox" value="'.$list['name'].'" name="'.$var_name.'[]" />');
+                    echo('<label class="form-check-label" for="'.$list['name'].'-input" >'.$list['label'].'</label>');
+                    echo('</div>');
         		}
-        		echo('</select>');
         		echo('</div>');
         	}
     		echo('</div>');
     		echo('</div>');
     		echo('</div>');
         }
-        echo('<input type="hidden" name="version" value="'.$questionid.'" />');
+        echo('<input type="hidden" name="version" value="'.$version.'" />');
         echo('<input type="hidden" name="conf[assessment_id]" value="'.$id.'" />');
         echo('<input type="hidden" name="conf[userid]" value="'.$this->session->userdata('userid').'" />');
         echo('<input type="hidden" name="conf[task_id]" value="'.$taskid.'" />');
