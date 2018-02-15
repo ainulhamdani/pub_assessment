@@ -6,11 +6,18 @@ $( document ).ready(function() {
     var options = {};
     $( "input" ).each(function() {
         var val = $( this ).val();
-        var name = $( this ).attr('name').replace("[]","");;
+        var name = $( this ).attr('name').replace("[]","");
         if(this.checked){
             options[name].push(val);
         }else{
             options[name] = [];
+        }
+    });
+    var requires = [];
+    $("input:checkbox").each(function(){
+        var name = $( this ).attr('name');
+        if($.inArray(name,requires)==-1){
+            requires.push(name);
         }
     });
     updateView();
@@ -34,6 +41,7 @@ $( document ).ready(function() {
             }
         }
         updateView();
+        updateRequire();
     });
 
     function updateView(){
@@ -59,11 +67,23 @@ $( document ).ready(function() {
 
             if(enabled){
                 $(this).show();
+                $(this).find("input").prop("required", true);
             }else{
                 $(this).hide();
+                $(this).find("input").prop('required', false);
             }
             
         });
+    }
+
+    function updateRequire(){
+        for (var i = requires.length - 1; i >= 0; i--) {
+            var $cbx_group = $("input:checkbox[name='"+requires[i]+"']");
+            if($cbx_group.is(":checked")){
+                $cbx_group.prop('required', false);
+            }
+        }
+        
     }
 });
 
