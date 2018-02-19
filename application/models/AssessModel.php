@@ -54,7 +54,7 @@ class AssessModel extends CI_Model {
     }
 
     public function getQuestion($id){
-        return $this->db->query("SELECT * FROM assessment_question WHERE id='$id'")->row();
+        return $this->db->query("SELECT * FROM assessment_question WHERE assessment_id='$id'")->row();
     }
 
     public function getAnswers($id,$userid){
