@@ -74,8 +74,7 @@ class Assessment extends CI_Controller {
             $this->load->model("Question");
             $data['assessment'] = $this->AssessModel->getAssessment($id);
             $data['question'] = $this->AssessModel->getQuestion($id);
-            $answer = $this->AssessModel->getAnswers($id,$this->session->userdata('userid'));
-            $data['task'] = $this->AssessModel->getUnansweredTasks($id,$answer);
+            $data['task'] = $this->AssessModel->getUnansweredTasks($id,$this->session->userdata('userid'));
             $this->load->view("user/assess/grade",$data);
         }
     }

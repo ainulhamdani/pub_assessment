@@ -39,18 +39,8 @@ class AssessModel extends CI_Model {
     }
 
 
-    public function getUnansweredTasks($assessid,$answers){
-        $answered = "";
-        if(empty($answers)){
-            $answered = "1";
-        }else{
-            foreach ($answers as $answer) {
-                $id = $answer->task_id;
-                $answered .= "id != $id";
-                if($answer!=  end($answers)) $answered .= " AND ";
-            }
-        }
-        return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND ($answered) ORDER BY RAND()")->row();
+    public function getUnansweredTasks($assessid,$userid){
+        return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND id NOT IN (SELECT task_id FROM answer WHERE assessment_id='$assessid' AND userid='$userid') ORDER BY RAND()")->row();
     }
 
     public function getQuestion($id){
