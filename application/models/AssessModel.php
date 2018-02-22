@@ -50,7 +50,7 @@ class AssessModel extends CI_Model {
                 if($answer!=  end($answers)) $answered .= " AND ";
             }
         }
-        return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND ($answered) ORDER BY id")->row();
+        return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND ($answered) ORDER BY RAND()")->row();
     }
 
     public function getQuestion($id){
