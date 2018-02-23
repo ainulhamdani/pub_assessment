@@ -76,6 +76,13 @@ class Welcome extends CI_Controller {
             $source = $this->input->post('source');
             $token = $this->input->post('token');
 
+            $gender = $this->input->post('gender');
+            $birthdate = $this->input->post('birthdate');
+            $education = $this->input->post('education');
+            $occupation = $this->input->post('occupation');
+            $status = $this->input->post('status');
+
+
             if($this->UserModel->isEmailExist($email)){
                 $this->session->set_flashdata('error', '<div class="alert alert-danger" role="alert"><center>Email already used!</center></div>');
                 redirect('welcome/register');
@@ -86,12 +93,15 @@ class Welcome extends CI_Controller {
             }else{
                 if($source=="google"){
                     $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                    $this->UserModel->addUserInfo($uuid,$gender,$birthdate,$education,$occupation,$status);
                     $this->UserModel->addGoogleAuth($uuid,$id);
                 }elseif($source=="facebook"){
                     $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                    $this->UserModel->addUserInfo($uuid,$gender,$birthdate,$education,$occupation,$status);
                     $this->UserModel->addFacebookAuth($uuid,$id);
                 }else{
                     $this->UserModel->addUser($uuid,$username,$password,$fullname,$email,$imageurl);
+                    $this->UserModel->addUserInfo($uuid,$gender,$birthdate,$education,$occupation,$status);
                 }
                 $data = [
                     'userid' => $uuid,

@@ -29,6 +29,52 @@ $this->load->view("header");
 				<input type="password" class="form-control" id="confirmpass" name="confirmpass" aria-describedby="cpsHelp" placeholder="Confirm Your Password" required>
 				<small id="passwordHelp" class="form-text"></small>
 			</div>
+
+			<div class="form-group">
+				<label for="gender">Jenis Kelamin</label>
+				<select class="form-control" id="gender" name="gender" aria-describedby="gnHelp" required>
+					<option value="male">Laki-laki</option>
+					<option value="female">Perempuan</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="birthdate">Tanggal Lahir</label>
+				<input type="date" class="form-control" id="birthdate" name="birthdate" aria-describedby="bdHelp" placeholder="Enter Birthdate" required>
+			</div>
+			<div class="form-group">
+				<label for="education">Pendidikan</label>
+				<select class="form-control" id="education" name="education" aria-describedby="eduHelp" required>
+					<option value="none">Tidak Sekolah</option>
+					<option value="elementary">SD</option>
+					<option value="junior_high">SMP</option>
+					<option value="senior_high">SMA/SMK</option>
+					<option value="diploma">D1 - D4</option>
+					<option value="bachelor">S1</option>
+					<option value="master">S2</option>
+					<option value="doctor">S3</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="occupation">Pekerjaan</label>
+				<select class="form-control" id="occupation" name="occupation" aria-describedby="ocuHelp" required>
+					<option value="none">Tidak Bekerja</option>
+					<option value="student">Mahasiswa</option>
+					<option value="farmer">Petani</option>
+					<option value="fisherman">Nelayan</option>
+					<option value="civil_servant">PNS</option>
+					<option value="private">Swasta</option>
+					<option value="bussinessman">Wirausaha</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="status">Status</label>
+				<select class="form-control" id="status" name="status" aria-describedby="stHelp" required>
+					<option value="none">Belum Menikah</option>
+					<option value="married">Menikah</option>
+					<option value="widower">Janda/Duda</option>
+				</select>
+			</div>
+
 			<div class="row justify-content-center">
 				<button id="submit" type="submit" class="btn btn-primary">Register</button>
 			</div>
