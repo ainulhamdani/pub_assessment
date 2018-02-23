@@ -51,7 +51,7 @@ $this->load->view("admin/nav");
 		    	
 		    	<div class="col-md-3 col-sm-6 col-12" style="min-height: 200px">
 				    	<div class="card">
-			    		<div class="card-header text-white bg-info"><?=$task->img_id?></div>
+			    		<div class="card-header text-white <?=$task->is_active?"bg-success":"bg-danger"?>"><?=$task->img_id?></div>
 				            <div class="card-body">
 				            	<img class="img-thumbnail" alt="<?=$task->img_id?>" style="width: 200px; height: 200px;" src="<?=base_url()?>asset/uploads/<?=$task->img_id?>.jpg">
 				            </div>
