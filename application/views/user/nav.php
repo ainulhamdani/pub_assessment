@@ -23,9 +23,14 @@
 <script type="text/javascript">
 	function signout() {
       var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        $(location).attr("href","<?=base_url()?>welcome/logout");
-      });
+      if(auth2!=null){
+      	auth2.signOut().then(function () {
+	        $(location).attr("href","<?=base_url()?>welcome/logout");
+	      });
+      }else{
+      	$(location).attr("href","<?=base_url()?>welcome/logout");
+      }
+      
     }
 
     function onLoad() {
