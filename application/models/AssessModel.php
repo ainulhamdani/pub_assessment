@@ -38,9 +38,21 @@ class AssessModel extends CI_Model {
         return $this->db->query("SELECT * FROM task WHERE assessment_id=$id")->result();
     }
 
+    public function getTasksNum($id,$is_active){
+        if($is_active){
+            return $this->db->query("SELECT * FROM task WHERE assessment_id=$id AND is_active=$is_active")->num_rows();
+        }else{
+            return $this->db->query("SELECT * FROM task WHERE assessment_id=$id")->num_rows();
+        }
+    }
+
 
     public function getUnansweredTasks($assessid,$userid){
         return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND is_active=1 AND id NOT IN (SELECT task_id FROM answer WHERE assessment_id='$assessid' AND userid='$userid') ORDER BY RAND()")->row();
+    }
+
+    public function getUnansweredTasksNum($assessid,$userid){
+        return $this->db->query("SELECT * FROM task WHERE assessment_id=$assessid AND is_active=1 AND id NOT IN (SELECT task_id FROM answer WHERE assessment_id='$assessid' AND userid='$userid') ORDER BY RAND()")->num_rows();
     }
 
     public function getQuestion($id){
