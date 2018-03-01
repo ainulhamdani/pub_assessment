@@ -17,7 +17,7 @@ class Psychomotor extends CI_Controller {
 				$this->output->set_status_header(201);
 				
 			} catch (Exception $e) {
-				$this->output->set_status_header(500);
+				$this->output->set_status_header(500)->set_output($e->getMessage());
 				
 				
 			}
@@ -44,7 +44,7 @@ class Psychomotor extends CI_Controller {
 				$this->output->set_status_header(201);
 				
 			} catch (Exception $e) {
-				$this->output->set_status_header(500);
+				$this->output->set_status_header(500)->set_output($e->getMessage());
 				
 				
 			}
