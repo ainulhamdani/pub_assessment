@@ -69,8 +69,9 @@ $( document ).ready(function() {
                 $(this).show();
                 $(this).find("input").prop("required", true);
             }else{
-                $(this).hide();
                 $(this).find("input").prop('required', false);
+                $(this).find("input").prop('checked', false);
+                $(this).hide();
             }
             
         });
