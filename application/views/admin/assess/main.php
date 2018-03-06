@@ -51,6 +51,16 @@ $this->load->view("admin/nav");
 		    		}
 		    	}
 		    	?>
+		    	<div class="col-md-3 col-sm-12 col-12" style="min-height: 200px">
+		    		<a href="<?=base_url()?>assessment/psychomotor">
+				    	<div class="card">
+			    			<div class="card-header text-white bg-success">Psychomotor</div>
+				            <div class="card-body">
+				            	This test will assess people psychomotor coordination
+				            </div>
+				         </div>
+				     </a>
+			     </div>
 		    </div>
 	    </div>
 	</div>

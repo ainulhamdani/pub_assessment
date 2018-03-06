@@ -180,4 +180,28 @@ class Assessment extends CI_Controller {
         }
     }
 
+    public function psychomotor($mode="",$assessid="",$taskid=""){
+        $this->load->model("PsychoModel");
+        if($this->session->userdata('level')=="admin"){
+            if($mode!=""){
+                if($taskid!=""){
+                    $data['taskid'] = $taskid;
+                    $data['assessment'] = $this->PsychoModel->getAssessment($assessid);
+                    $data['assessid'] = $data['assessment']->assessment_id;
+                    $this->load->view("admin/psychomotor/task",$data);
+                }else{
+                    $data['assessment'] = $this->PsychoModel->getAssessment($assessid);
+                    $data['tasks'] = $this->PsychoModel->getTasks($data['assessment']->assessment_id);
+                    $this->load->view("admin/psychomotor/tasks",$data);
+                }
+            }else{
+                $data['assessments'] = $this->PsychoModel->getAssessments();
+                $this->load->view("admin/psychomotor/detail",$data);
+            }
+            
+        }else{
+            redirect('assessment');
+        }
+    }
+
 }
