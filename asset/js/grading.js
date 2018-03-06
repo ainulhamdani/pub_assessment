@@ -25,9 +25,10 @@ $( document ).ready(function() {
     $('input').on('change', function() {
         var val = $( this ).val();
         var name = $( this ).attr('name').replace("[]","");
-        if(this.checked){
+        if(this.checked||this.selected){
             if($( this ).attr('type')=="radio"){
                 options[name][0] = val;
+
             }else{
                 options[name].push(val);
             }
@@ -69,8 +70,29 @@ $( document ).ready(function() {
                 $(this).show();
                 $(this).find("input").prop("required", true);
             }else{
-                $(this).find("input").prop('required', false);
-                $(this).find("input").prop('checked', false);
+                $(this).find("input").each(function(){
+                    $(this).prop('required', false);
+                    $(this).prop('checked', false);
+                    $(this).prop('selected', false);
+                    var val = $( this ).val();
+                    var name = $( this ).attr('name').replace("[]","");
+                    if(this.checked||this.selected){
+                        if($( this ).attr('type')=="radio"){
+                            options[name][0] = val;
+
+                        }else{
+                            options[name].push(val);
+                        }
+                        
+                    }else{
+                        if($( this ).attr('type')=="radio"){
+                            options[name] = [];
+                        }else{
+                            var idx = $.inArray(val,options[name]);
+                            if (idx !== -1) options[name].splice(idx, 1);
+                        }
+                    }
+                });
                 $(this).hide();
             }
             
