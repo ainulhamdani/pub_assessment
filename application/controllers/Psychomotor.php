@@ -64,7 +64,7 @@ class Psychomotor extends CI_Controller {
 					if(!isset($assessment->assessment_id)) throw new Exception("assessment_id not defined", 1);
 					if(!isset($assessment->task_id)) throw new Exception("task_id not defined", 1);
 					if(!isset($assessment->time_start)) throw new Exception("time_start not defined", 1);
-					if(!isset($assessment->time_end)) throw new Exception("time_end not defined", 1);
+					if(!isset($assessment->time_end)) $assessment->time_end = "NULL";
 					$db->query("INSERT INTO assessment (assessment_id,task_id,time_start,time_end) VALUES('$assessment->assessment_id','$assessment->task_id','$assessment->time_start','$assessment->time_end')");
 				}
 				$this->output->set_status_header(201);
