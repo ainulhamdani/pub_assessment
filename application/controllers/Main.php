@@ -5,13 +5,10 @@ class Main extends CI_Controller {
 
 	public function index()
 	{
-		if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
-            redirect('welcome/login');
-        }
         if($this->session->userdata('level')=="admin"){
-            redirect('assessment');
+            $this->load->view("admin/home");
         }else{
-        	redirect('assessment');
+        	$this->load->view("user/home");
         }
 	}
 

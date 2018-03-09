@@ -10,10 +10,6 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		if(empty($this->session->userdata('userid'))&&$this->session->userdata('user_valid') == FALSE) {
-            redirect('welcome/login');
-        }
-
         redirect('main');
 	}
 

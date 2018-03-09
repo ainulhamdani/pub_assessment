@@ -12,11 +12,15 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+				<?php if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) { ?>
+				<a class="nav-link" href="<?=base_url()?>welcome/login">Login</a>
+				<?php }else{ ?>
+				<a class="nav-link dropdown-toggle" href="" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown08">
 					<a class="dropdown-item" href="#">Profile</a>
 					<a class="dropdown-item" href="<?=base_url()?>welcome/logout">Logout</a>
 				</div>
+				<?php } ?>
 			</li>
 		</ul>
 	</div>
