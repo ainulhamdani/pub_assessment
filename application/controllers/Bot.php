@@ -68,6 +68,7 @@ class Bot extends CI_Controller {
             unlink($up_data['full_path']);
             $this->load->model('BotModel');
             $this->BotModel->schedule($data_excel);
+            redirect('bot');
 
         }else{
             $error = array('error' => $this->upload->display_errors());

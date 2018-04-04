@@ -17,15 +17,15 @@ class BotModel extends CI_Model {
             foreach ($value['values'] as $contact) {
                 $data = ['contact_name'=>$contact['A'],'urn'=>'facebook:'.$contact['B']];
                 $response = $this->post_curl($url,$data);
-                var_dump($response);
+                // var_dump($response);
             }
         }
     }
 
     private function post_curl($url,$data){
         $post = json_encode($data);
-        var_dump($url);
-        var_dump($post);
+        // var_dump($url);
+        // var_dump($post);
         $headers = [
             'Content-Type: application/json'
         ];
@@ -37,10 +37,10 @@ class BotModel extends CI_Model {
 
         // execute!
         $response = curl_exec($ch);
-        if(!$response){
-            die('Error: "' . curl_error($ch) . '" - Code: ' . curl_errno($ch));
-        }
-        curl_close($ch);
+        // if(!$response){
+        //     die('Error: "' . curl_error($ch) . '" - Code: ' . curl_errno($ch));
+        // }
+        // curl_close($ch);
         return $response;
     }
 
