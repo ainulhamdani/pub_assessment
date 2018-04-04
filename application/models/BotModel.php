@@ -17,7 +17,7 @@ class BotModel extends CI_Model {
             foreach ($value['values'] as $contact) {
                 $data = ['contact_name'=>$contact['A'],'urn'=>'facebook:'.$contact['B']];
                 $response = $this->post_curl($url,$data);
-                // var_dump($response);
+                var_dump($response);
             }
         }
     }
