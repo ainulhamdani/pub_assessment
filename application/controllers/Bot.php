@@ -30,6 +30,7 @@ class Bot extends CI_Controller {
     }
 
     public function run_bot(){
+        set_time_limit(1000);
         if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
             redirect('welcome/login');
         }
