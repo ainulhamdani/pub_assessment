@@ -96,4 +96,14 @@ class Bot extends CI_Controller {
         }
     }
 
+    public function bot(){
+        if($this->input->raw_input_stream!=""){
+            $this->load->model('Uuid');
+            $data = $this->security->xss_clean($this->input->raw_input_stream);
+            $db = $this->load->database('bot', TRUE);
+            $uid = $this->Uuid->v4();
+            $db->query("INSERT INTO message_event (uid,payload) VALUES('$uid','$data')");
+        }
+    }
+
 }
