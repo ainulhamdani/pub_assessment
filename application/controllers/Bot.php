@@ -103,6 +103,9 @@ class Bot extends CI_Controller {
             $db = $this->load->database('bot', TRUE);
             $uid = $this->Uuid->v4();
             $db->query("INSERT INTO message_event (uid,payload) VALUES('$uid','$data')");
+            $this->output->set_status_header(200);
+        }else{
+            $this->output->set_status_header(204);
         }
     }
 
