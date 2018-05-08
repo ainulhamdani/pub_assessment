@@ -10,6 +10,7 @@ class BotModel extends CI_Model {
 
     private $BOT = ['Bot 1'=>'one','Bot 2'=>'two','Bot 3'=>'three'];
     private $URL = "https://karma.goodbot.ai/trigger/";
+    // private $URL = "http://beats.sid-indonesia.org/bot/test/";
 
     public function schedule($datas){
         foreach ($datas as $key => $value) {
@@ -17,6 +18,7 @@ class BotModel extends CI_Model {
             foreach ($value['values'] as $contact) {
                 $data = ['contact_name'=>$contact['A'],'urn'=>'facebook:'.$contact['B']];
                 $response = $this->post_curl($url,$data);
+                var_dump($data);
                 var_dump($response);
             }
         }
