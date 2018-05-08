@@ -11,8 +11,8 @@ class BotModel extends CI_Model {
     private $BOT = ['Bot 1'=>'one','Bot 2'=>'two','Bot 3'=>'three'];
     private $URL = "https://karma.goodbot.ai/trigger/";
 
-    public function schedule($data){
-        foreach ($data as $key => $value) {
+    public function schedule($datas){
+        foreach ($datas as $key => $value) {
             $url = $this->URL.$this->BOT[$key];
             foreach ($value['values'] as $contact) {
                 $data = ['contact_name'=>$contact['A'],'urn'=>'facebook:'.$contact['B']];
