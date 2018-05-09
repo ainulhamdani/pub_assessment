@@ -5,7 +5,7 @@ class Bot extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
-        
+        date_default_timezone_set("Asia/Makassar"); 
     }
 
 	public function index()
@@ -47,6 +47,7 @@ class Bot extends CI_Controller {
                     "bot_type"=>$_POST['bot_type']
                 ]);
             $db->insert_batch('schedule', $insert);
+            redirect("bot");
         }else{
             redirect("bot");
         }
@@ -79,6 +80,11 @@ class Bot extends CI_Controller {
             $this->load->view("admin/bot/schedule_detail",$data);
         }
         
+    }
+
+    public function run_bot(){
+        $this->load->model('BotModel');
+        $this->BotModel->run_schedule();
     }
 
     public function save_schedule(){
