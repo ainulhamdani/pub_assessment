@@ -20,8 +20,8 @@ class BotModel extends CI_Model {
             foreach ($value['values'] as $contact) {
                 $date = date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP( $contact['D'] ));
                 array_push($insert, [
-                    "fb_id"=>$contact['A'],
-                    "fb_name"=>$contact['B'],
+                    "fb_id"=>$contact['B'],
+                    "fb_name"=>$contact['A'],
                     "time"=>str_replace(".", ":", $contact['C']),
                     "date"=>$date,
                     "bot_type"=>$key
