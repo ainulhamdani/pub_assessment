@@ -42,8 +42,10 @@ $this->load->view("admin/nav");
 							<td><?=$user->bot_type?></td>
 							<td><?=$user->is_sent==1?"Yes":"No"?></td>
 							<td>
+								<?php if(!$user->is_sent){ ?>
 								<a type="button" class="btn btn-sm btn-warning">Edit</a>
 								<a type="button" class="btn btn-sm btn-danger">Delete</a>
+								<?php } ?>
 							</td>
 						</tr>
 
