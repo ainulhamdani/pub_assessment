@@ -14,7 +14,7 @@ $this->load->view("admin/nav");
 	    			<div class="col-md-9 col-sm-9 col-12"><input class="form-control" type="text" name="fb_id" required /></div>
 	    		</div>
 	    		<div class="row form-group">
-	    			<div class="col-md-3 col-sm-3 col-12">Facebook ID</div>
+	    			<div class="col-md-3 col-sm-3 col-12">Facebook Name</div>
 	    			<div class="col-md-9 col-sm-9 col-12"><input class="form-control" type="text" name="fb_name" required /></div>
 	    		</div>
 	    		<div class="row form-group">
@@ -26,7 +26,7 @@ $this->load->view("admin/nav");
 	    			<div class="col-md-9 col-sm-9 col-12"><input class="form-control" type="date" name="date" required /></div>
 	    		</div>
 	    		<div class="row form-group">
-	    			<div class="col-md-3 col-sm-3 col-12">Facebook ID</div>
+	    			<div class="col-md-3 col-sm-3 col-12">Bot Type</div>
 	    			<div class="col-md-9 col-sm-9 col-12">
 	    				<select class="form-control" name="bot_type" >
 	    					<option value="Bot 1">Bot 1</option>
