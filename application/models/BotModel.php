@@ -13,6 +13,35 @@ class BotModel extends CI_Model {
     // private $URL = "http://beats.sid-indonesia.org/bot/test/";
 
     public function schedule($datas){
+        $db = $this->load->database('bot', TRUE);
+        $insert = [];
+        foreach ($datas as $key => $value) {
+            $url = $this->URL.$this->BOT[$key];
+            foreach ($value['values'] as $contact) {
+                $date = date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP( $contact['D'] ));
+                array_push($insert, [
+                    "fb_id"=>$contact['A'],
+                    "fb_name"=>$contact['B'],
+                    "time"=>str_replace(".", ":", $contact['C']),
+                    "date"=>$date,
+                    "bot_type"=>$key
+                ]);
+            }
+        }
+        $db->insert_batch('schedule', $insert);
+    }
+
+    public function getScheduleDate(){
+        $db = $this->load->database('bot', TRUE);
+        return $db->query("SELECT schedule.date FROM schedule GROUP BY schedule.date")->result();
+    }
+
+    public function getSchedule($date){
+        $db = $this->load->database('bot', TRUE);
+        return $db->query("SELECT * FROM schedule WHERE schedule.date='$date' ORDER BY schedule.time")->result();
+    }
+
+    public function run($datas){
         foreach ($datas as $key => $value) {
             $url = $this->URL.$this->BOT[$key];
             foreach ($value['values'] as $contact) {

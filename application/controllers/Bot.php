@@ -19,17 +19,36 @@ class Bot extends CI_Controller {
         $this->load->view("admin/bot/home");
 	}
 
-    public function run(){
+    public function upload(){
         if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
             redirect('welcome/login');
         }
         if($this->session->userdata('level')!="admin"){
             redirect('');
         }
-        $this->load->view("admin/bot/run");
+        $this->load->view("admin/bot/upload");
     }
 
-    public function run_bot(){
+    public function schedule(){
+        if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
+            redirect('welcome/login');
+        }
+        if($this->session->userdata('level')!="admin"){
+            redirect('');
+        }
+        $this->load->model('BotModel');
+        $date = $this->uri->segment(3);
+        if($date == null){
+            $data['dates'] = $this->BotModel->getScheduleDate();
+            $this->load->view("admin/bot/schedule",$data);
+        }else{
+            $data['schedules'] = $this->BotModel->getSchedule($date);
+            $this->load->view("admin/bot/schedule_detail",$data);
+        }
+        
+    }
+
+    public function save_schedule(){
         set_time_limit(1000);
         if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
             redirect('welcome/login');
@@ -69,7 +88,7 @@ class Bot extends CI_Controller {
             unlink($up_data['full_path']);
             $this->load->model('BotModel');
             $this->BotModel->schedule($data_excel);
-            //redirect('bot');
+            redirect('bot/schedule');
 
         }else{
             $error = array('error' => $this->upload->display_errors());
@@ -79,10 +98,10 @@ class Bot extends CI_Controller {
 
     public function template(){
         $this->load->library('PHPExcell');
-        $file = FCPATH."asset/temp/bot_temp.xlsx";
+        $file = FCPATH."asset/temp/schedule_temp.xlsx";
         $fileObject = PHPExcel_IOFactory::load($file);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="bot_template.xlsx"'); 
+        header('Content-Disposition: attachment;filename="schedule_template.xlsx"'); 
         header('Cache-Control: max-age=0'); 
         $saveContainer = PHPExcel_IOFactory::createWriter($fileObject,'Excel2007');
         $saveContainer->save('php://output');

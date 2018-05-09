@@ -3,12 +3,12 @@ $this->load->view("header");
 $this->load->view("admin/nav");
 ?>
 	<div class="page-header">
-        <h1>Facebook Bot</h1>
+        <h1>Facebook Bot <small>Upload Schedule</small></h1>
     </div>
     <hr>
 	<div class="row">
 		<div class="col-md-12">
-			<form action="<?=base_url()?>bot/run_bot" method="POST" enctype="multipart/form-data">
+			<form action="<?=base_url()?>bot/save_schedule" method="POST" enctype="multipart/form-data">
 	    		<div class="row form-group">
 	    			<div class="col-md-3 col-sm-3 col-12">Template</div>
 	    			<div class="col-md-9 col-sm-9 col-12">Please use this template : <a href="<?=base_url()?>bot/template">Download</a></div>
