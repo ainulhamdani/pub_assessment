@@ -19,6 +19,39 @@ class Bot extends CI_Controller {
         $this->load->view("admin/bot/home");
 	}
 
+    public function add(){
+        if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
+            redirect('welcome/login');
+        }
+        if($this->session->userdata('level')!="admin"){
+            redirect('');
+        }
+        $this->load->view("admin/bot/add");
+    }
+
+    public function add_one(){
+        if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
+            redirect('welcome/login');
+        }
+        if($this->session->userdata('level')!="admin"){
+            redirect('');
+        }
+        if($_POST){
+            $db = $this->load->database('bot', TRUE);
+            $insert = [];
+            array_push($insert, [
+                    "fb_id"=>$_POST['fb_id'],
+                    "fb_name"=>$_POST['fb_name'],
+                    "time"=>$_POST['time'],
+                    "date"=>$_POST['date'],
+                    "bot_type"=>$_POST['bot_type']
+                ]);
+            $db->insert_batch('schedule', $insert);
+        }else{
+            redirect("bot");
+        }
+    }
+
     public function upload(){
         if(empty($this->session->userdata('id_user'))&&$this->session->userdata('user_valid') == FALSE) {
             redirect('welcome/login');
