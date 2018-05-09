@@ -18,6 +18,7 @@ $this->load->view("admin/nav");
 							<th>Time</th>
 							<th>Bot Type</th>
 							<th>Is Sent</th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -40,6 +41,10 @@ $this->load->view("admin/nav");
 							<td><?=$user->time?></td>
 							<td><?=$user->bot_type?></td>
 							<td><?=$user->is_sent==1?"Yes":"No"?></td>
+							<td>
+								<a type="button" class="btn btn-sm btn-warning">Edit</a>
+								<a type="button" class="btn btn-sm btn-danger">Delete</a>
+							</td>
 						</tr>
 
 								<?php
