@@ -18,6 +18,9 @@ class BotModel extends CI_Model {
         foreach ($datas as $key => $value) {
             $url = $this->URL.$this->BOT[$key];
             foreach ($value['values'] as $contact) {
+                if($contact['A'] == "" || $contact['B'] == ""){
+                    continue;
+                }
                 $date = date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP( $contact['D'] ));
                 array_push($insert, [
                     "fb_id"=>$contact['B'],
