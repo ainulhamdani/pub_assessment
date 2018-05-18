@@ -44,9 +44,9 @@ class BotModel extends CI_Model {
         return $db->query("SELECT * FROM schedule WHERE schedule.date='$date' ORDER BY schedule.time")->result();
     }
 
-    public function getSchedule2($date,$time){
+    public function getSchedule2($date,$time,$lasthour){
         $db = $this->load->database('bot', TRUE);
-        return $db->query("SELECT * FROM schedule WHERE schedule.date='$date' AND schedule.time < '$time' AND schedule.is_sent=0 ORDER BY schedule.time")->result();
+        return $db->query("SELECT * FROM schedule WHERE schedule.date='$date' AND schedule.time < '$time' AND schedule.time > '$lasthour' AND schedule.is_sent=0 ORDER BY schedule.time")->result();
     }
 
     public function setIsSent($ids,$date,$time){
@@ -57,9 +57,10 @@ class BotModel extends CI_Model {
     public function run_schedule(){
         $date = date('Y-m-d');
         $time = date('H:i:s');
+				$lasthour = date('H:i:s', strtotime('-1 hour'));
         $users = $this->getSchedule2($date,$time);
         $ids = $this->run($users);
-        if(!empty($ids)) $this->setIsSent($ids,$date,$time);
+        if(!empty($ids)) $this->setIsSent($ids,$date,$time,$lasthour);
     }
 
     public function run($datas){
