@@ -9,7 +9,8 @@
 			<li<?=($this->uri->segment(1)=='main'||$this->uri->segment(1)=='')?' class="active"':''?>><a class="nav-link" href="<?=base_url()?>">Home</a></li>
 			<li<?=($this->uri->segment(1)=='user')?' class="active"':''?>><a class="nav-link" href="<?=base_url()?>user">User</a></li>
 			<li<?=($this->uri->segment(1)=='assessment')?' class="active"':''?>><a class="nav-link" href="<?=base_url()?>assessment">Assessment</a></li>
-			<li<?=($this->uri->segment(1)=='bot')?' class="active"':''?>><a class="nav-link" href="<?=base_url()?>bot">Bot</a></li>
+			<li<?=($this->uri->segment(1)=='bot')?' class="active"':''?>><a class="nav-link" href="<?=base_url()?>bot">Facebook Bot</a></li>
+			<li<?=($this->uri->segment(1)=='telegram')?' class="active"':''?>><a class="nav-link" href="<?=base_url()?>telegram">Telegram Bot</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item dropdown">
